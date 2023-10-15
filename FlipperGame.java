@@ -47,7 +47,7 @@ public class FlipperGame extends JFrame implements ActionListener
     public FlipperGame()
     //Initialize the board, the cards, and the labels
     {
-        setTitle("Memory Card Game");
+        setTitle("Flipper Memory Game");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(500, 500);
