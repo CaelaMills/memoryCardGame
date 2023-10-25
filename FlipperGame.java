@@ -46,14 +46,14 @@ public class FlipperGame extends JFrame implements ActionListener {
         this.add(this.timerLabel, BorderLayout.NORTH);
 
         // Set up frame
-        setTitle("Flipper Card Game");
+        setTitle("Memory Card Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         this.add(this.panel, BorderLayout.CENTER);
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-        titleLabel = new JLabel("Welcome to the Flipper (Memory Card) Game!");
+        titleLabel = new JLabel("Welcome to Memory Card Game!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         panel.add(titleLabel);
 
@@ -64,10 +64,8 @@ public class FlipperGame extends JFrame implements ActionListener {
     public void startGame() {
         // Load card images
         for (int i = 0; i < numCards / 2; i++) {
-            this.icons[i] = new ImageIcon("cards_front/front.png"); //change from "front.png" to -- "cards_front/front.png"
-
-
-            this.icons[i + numCards / 2] = new ImageIcon("cards_back/back " + i + ".png"); //changed from "back " + i + ".png" to -- "cards_back/back " + i + ".png"
+            this.icons[i] = new ImageIcon("cards_front/front.png");
+            this.icons[i + numCards / 2] = new ImageIcon("cards_back/back " + i + ".png");
         }
 
         // Shuffle cards
