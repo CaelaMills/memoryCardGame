@@ -4,11 +4,13 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.Timer;
 
+
 public class FlipperGame extends JFrame implements ActionListener {
     private JPanel panel;
     private JLabel titleLabel;
     private JButton[] buttons;
     private ImageIcon[] icons;
+    private int[] iconnumbers;
     private int[] cardNumbers;
     private int[] selectedCards;
     private int[] matchedCards;
@@ -18,6 +20,9 @@ public class FlipperGame extends JFrame implements ActionListener {
     private Timer timer;
     private JLabel timerLabel;
     private int timeLeft;
+    private ImageIcon frontIcon;
+    private Image frontImage;
+    private ArrayList<String> backImage; // Added declaration -- fix
 
     public FlipperGame(int numCards) {
         this.numCards = numCards;
@@ -62,10 +67,42 @@ public class FlipperGame extends JFrame implements ActionListener {
     }
 
     public void startGame() {
+        // Define back images of cards, add more back images if needed
+        backImage = new ArrayList<>();
+        backImage.add("back1.png");
+        backImage.add("back2.png");
+        backImage.add("back3.png");
+        backImage.add("back4.png");
+        backImage.add("back5.png");
+        backImage.add("back6.png");
+        backImage.add("back7.png");
+        backImage.add("back8.png");
+        backImage.add("back9.png");
+        backImage.add("back10.png");
+        backImage.add("back11.png");
+        backImage.add("back12.png");
+
         // Load card images
+        frontIcon = new ImageIcon("front.png");
+        frontImage = frontIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
         for (int i = 0; i < numCards / 2; i++) {
-            this.icons[i] = new ImageIcon("cards_front/front.png");
-            this.icons[i + numCards / 2] = new ImageIcon("cards_back/back " + i + ".png");
+            ImageIcon cardIcon = new ImageIcon(backImage.get(i));
+            Image cardImage = cardIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            this.icons[i] = new ImageIcon(cardImage);
+
+            ImageIcon cardIcon2 = new ImageIcon(backImage.get(i));
+            Image cardImage2 = cardIcon2.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            this.icons[i + numCards / 2] = new ImageIcon(cardImage2);
+
+//            ImageIcon backIcon = new ImageIcon(backImage.get(i));
+//            Image backImage = backIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+//            this.icons[i] = new ImageIcon(backImage);
+
+        }
+
+        for (int i = 0; i < numCards; i++) {
+            this.cardNumbers[i] = i;
         }
 
         // Shuffle cards
@@ -75,6 +112,7 @@ public class FlipperGame extends JFrame implements ActionListener {
             int temp = this.cardNumbers[i];
             this.cardNumbers[i] = this.cardNumbers[j];
             this.cardNumbers[j] = temp;
+//            this.iconnumbers[i] = i / 2;
         }
 
         // Reset game variables
@@ -87,7 +125,7 @@ public class FlipperGame extends JFrame implements ActionListener {
 
         // Update buttons
         for (int i = 0; i < numCards; i++) {
-            this.buttons[i].setIcon(this.icons[this.cardNumbers[i]]);
+            this.buttons[i].setIcon(new ImageIcon(frontImage));
             this.buttons[i].setEnabled(true);
         }
     }
@@ -104,11 +142,15 @@ public class FlipperGame extends JFrame implements ActionListener {
                 } else {
                     this.selectedCards[1] = index;
                     this.buttons[index].setIcon(this.icons[this.cardNumbers[index]]);
+                    ImageIcon firstcard = this.icons[this.selectedCards[0]];
+                    ImageIcon secondcard = this.icons[this.selectedCards[1]];
                     this.numAttempts++;
-                    if (this.cardNumbers[this.selectedCards[0]] == this.cardNumbers[this.selectedCards[1]]) {
+                    if (this.cardNumbers[this.selectedCards[0]] %(numCards / 2) == this.cardNumbers[this.selectedCards[1]] %(numCards / 2)) {
                         // Match found
                         this.matchedCards[this.selectedCards[0]] = 1;
                         this.matchedCards[this.selectedCards[1]] = 1;
+                        this.selectedCards[0] = -1;
+                        this.selectedCards[1] = -1;
                         this.numMatches++;
                         if (this.numMatches == this.numCards / 2) {
                             // Game over
@@ -120,10 +162,11 @@ public class FlipperGame extends JFrame implements ActionListener {
                         // No match found
                         this.buttons[this.selectedCards[0]].setEnabled(false);
                         this.buttons[this.selectedCards[1]].setEnabled(false);
-                        Timer flipTimer = new Timer(5000, new ActionListener() {
+                        Timer flipTimer = new Timer(2000, new ActionListener() {
+                            // delay originally set to 1000 ms with the help of my tutor Jonathan -- I changed to 1500 then 2000
                             public void actionPerformed(ActionEvent e) {
-                                buttons[selectedCards[0]].setIcon(icons[cardNumbers[selectedCards[0]] + numCards / 2]);
-                                buttons[selectedCards[1]].setIcon(icons[cardNumbers[selectedCards[1]] + numCards / 2]);
+                                buttons[selectedCards[0]].setIcon(new ImageIcon(frontImage));
+                                buttons[selectedCards[1]].setIcon(new ImageIcon(frontImage));
                                 buttons[selectedCards[0]].setEnabled(true);
                                 buttons[selectedCards[1]].setEnabled(true);
                                 selectedCards[0] = -1;
